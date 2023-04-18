@@ -7,10 +7,17 @@ class ViewController: NSViewController {
     private let device = MTLCreateSystemDefaultDevice()!
     private let positionData: [Float] = [
         +0.00, +0.75, 0, +1,
-        +0.75, -0.75, 0, +1,
-        -0.75, -0.75, 0, +1
+        +0.75, +0.00, 0, +1,
+        -0.75, +0.00, 0, +1,
+         +0.00, -0.75, 0, +1,
+         +0.55, +0.00, 0, +1,
+         -0.55, +0.00, 0, +1
+         
     ]
     private let colorData: [Float] = [
+        1, 1, 1, 1,
+        0, 1, 0, 1,
+        0, 1, 1, 1,
         1, 1, 1, 1,
         0, 1, 0, 1,
         0, 1, 1, 1,
@@ -29,6 +36,7 @@ class ViewController: NSViewController {
         super.viewDidLoad()
         initLayer();
         setupMetal()
+        makeBuffers()
         makePipeline()
         draw();
     }
@@ -45,13 +53,14 @@ class ViewController: NSViewController {
         renderPassDescriptor = MTLRenderPassDescriptor()
         renderPassDescriptor.colorAttachments[0].loadAction = MTLLoadAction.clear
         renderPassDescriptor.colorAttachments[0].storeAction = MTLStoreAction.store
-        renderPassDescriptor.colorAttachments[0].clearColor = MTLClearColorMake(0.0, 0.0, 0.0, 1.0)
+        renderPassDescriptor.colorAttachments[0].clearColor = MTLClearColorMake(1.0, 1.0, 1.0, 1.0)
     }
     private func makeBuffers() {
         let size = positionData.count * MemoryLayout<Float>.size
         bufferPosition = device.makeBuffer(bytes: positionData, length: size)
         bufferColor = device.makeBuffer(bytes: colorData, length: size)
     }
+    
     private func makePipeline() {
         guard let library = device.makeDefaultLibrary() else {fatalError()}
         let descriptor = MTLRenderPipelineDescriptor()
@@ -70,7 +79,7 @@ class ViewController: NSViewController {
         encoder.setRenderPipelineState(renderPipelineState)
         encoder.setVertexBuffer(bufferPosition, offset: 0, index: 0)
         encoder.setVertexBuffer(bufferColor, offset: 0, index:1)
-        encoder.drawPrimitives(type: MTLPrimitiveType.triangle,vertexStart: 0,vertexCount: 3)
+        encoder.drawPrimitives(type: MTLPrimitiveType.triangle,vertexStart: 0,vertexCount: 6)
         encoder.endEncoding()
         cBuffer.present(drawable)
         cBuffer.commit()
