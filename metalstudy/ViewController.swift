@@ -21,7 +21,7 @@ class ViewController: NSViewController {
     private let colorData: [Float] = [
         1, 1, 1, 1,
         0, 1, 0, 1,
-        0, 1, 1, 1
+        0, 1, 1, 1,
     ]
     
     private var commandQueue: MTLCommandQueue!
@@ -57,7 +57,7 @@ class ViewController: NSViewController {
         view.layer!.addSublayer(metalLayer)
     }
     
-    private func setupMetal(){
+    private func setupMetal() {
         commandQueue = device.makeCommandQueue()
         
         renderPassDescriptor = MTLRenderPassDescriptor()
@@ -65,17 +65,17 @@ class ViewController: NSViewController {
         renderPassDescriptor.colorAttachments[0].loadAction = MTLLoadAction.clear
         renderPassDescriptor.colorAttachments[0].storeAction = MTLStoreAction.store
         
-        renderPassDescriptor.colorAttachments[0].clearColor = MTLClearColorMake(0.0,0.0,0.0,1.0)
+        renderPassDescriptor.colorAttachments[0].clearColor = MTLClearColorMake(0.0, 0.0, 0.0, 1.0)
     }
     
-    private func makeBuffers(){
+    private func makeBuffers() {
         let size = positionData.count * MemoryLayout<Float>.size
         
         bufferPosition = device.makeBuffer(bytes: positionData, length: size)
         bufferColor = device.makeBuffer(bytes: colorData, length: size)
     }
     
-    private func makePipeline(){
+    private func makePipeline() {
         guard let library = device.makeDefaultLibrary() else {fatalError()}
         let descriptor = MTLRenderPipelineDescriptor()
         descriptor.vertexFunction = library.makeFunction(name: "myVertexShader")
@@ -85,7 +85,7 @@ class ViewController: NSViewController {
         renderPipelineState = try! device.makeRenderPipelineState(descriptor: descriptor)
     }
     
-    func draw(){
+    func draw() {
         guard let drawable = metalLayer.nextDrawable() else {fatalError()}
         renderPassDescriptor.colorAttachments[0].texture = drawable.texture
         
