@@ -5,7 +5,11 @@ import MetalKit
 class ViewController: NSViewController {
     
     private let device = MTLCreateSystemDefaultDevice()!
-    private let positionData: [Float] = [+0.00, +0.75, 0, +1,+0.75, -0.75, 0, +1,-0.75, -0.75, 0, +1]
+    private let positionData: [Float] = [
+        +0.00, +0.75, 0, +1,
+        +0.75, -0.75, 0, +1,
+        -0.75, -0.75, 0, +1
+    ]
     private let colorData: [Float] = [
         1, 1, 1, 1,
         0, 1, 0, 1,
@@ -60,7 +64,9 @@ class ViewController: NSViewController {
         guard let drawable = metalLayer.nextDrawable() else {fatalError()}
         renderPassDescriptor.colorAttachments[0].texture = drawable.texture
         guard let cBuffer = commandQueue.makeCommandBuffer() else {fatalError()}
-        let encoder = cBuffer.makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
+        let encoder = cBuffer.makeRenderCommandEncoder(
+            descriptor: renderPassDescriptor
+        )!
         encoder.setRenderPipelineState(renderPipelineState)
         encoder.setVertexBuffer(bufferPosition, offset: 0, index: 0)
         encoder.setVertexBuffer(bufferColor, offset: 0, index:1)
