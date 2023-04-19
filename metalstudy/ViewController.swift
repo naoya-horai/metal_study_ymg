@@ -29,7 +29,7 @@ class ViewController: NSViewController {
     private var renderPipelineState: MTLRenderPipelineState!
     private var metalLayer: CAMetalLayer!;
     override func loadView() {
-        view = NSView(frame: NSRect(x: 0, y: 0, width: 960, height: 540))
+        view = NSView(frame: NSRect(x: 0, y: 0, width: 480, height: 480))
         view.layer = CALayer()
     }
     override func viewDidLoad() {
