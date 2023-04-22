@@ -6,22 +6,16 @@ class ViewController: NSViewController {
     
     private let device = MTLCreateSystemDefaultDevice()!
     private let positionData: [Float] = [
-        +0.00, +0.75, 0, +1,
-        +0.75, +0.00, 0, +1,
-        -0.75, +0.00, 0, +1,
-         +0.00, -0.75, 0, +1,
-         +0.55, +0.00, 0, +1,
-         -0.55, +0.00, 0, +1
+        -1.00, +1.00, 0, +1,
+         -1.00, -1.00, 0, +1,
+         +1.00, +1.00, 0, +1,
+         +1.00, +1.00, 0, +1,
+         -1.00, -1.00, 0, +1,
+         +1.00, -1.00, 0, +1
          
     ]
-    private let colorData: [Float] = [
-        1, 1, 1, 1,
-        0, 1, 0, 1,
-        0, 1, 1, 1,
-        1, 1, 1, 1,
-        0, 1, 0, 1,
-        0, 1, 1, 1,
-    ]
+    
+    private let colorData: [Float] = []
     private var commandQueue: MTLCommandQueue!
     private var renderPassDescriptor: MTLRenderPassDescriptor!
     private var bufferPosition: MTLBuffer!
@@ -29,7 +23,7 @@ class ViewController: NSViewController {
     private var renderPipelineState: MTLRenderPipelineState!
     private var metalLayer: CAMetalLayer!;
     override func loadView() {
-        view = NSView(frame: NSRect(x: 0, y: 0, width: 480, height: 480))
+        view = NSView(frame: NSRect(x: 0, y: 0, width: 1920, height: 1080))
         view.layer = CALayer()
     }
     override func viewDidLoad() {
@@ -53,7 +47,7 @@ class ViewController: NSViewController {
         renderPassDescriptor = MTLRenderPassDescriptor()
         renderPassDescriptor.colorAttachments[0].loadAction = MTLLoadAction.clear
         renderPassDescriptor.colorAttachments[0].storeAction = MTLStoreAction.store
-        renderPassDescriptor.colorAttachments[0].clearColor = MTLClearColorMake(1.0, 1.0, 1.0, 1.0)
+        renderPassDescriptor.colorAttachments[0].clearColor = MTLClearColorMake(0.0, 0.0, 0.0, 1.0)
     }
     private func makeBuffers() {
         let size = positionData.count * MemoryLayout<Float>.size

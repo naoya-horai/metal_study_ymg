@@ -18,6 +18,7 @@ vertex MyVertex myVertexShader(
                                const device float4 *color[[buffer(1)]],
                                const uint vid [[vertex_id]] ){
                                    MyVertex v;
+                                  
                                    v.position = position[vid];
                                    v.color = color[vid];
                                    return v;
@@ -25,6 +26,8 @@ vertex MyVertex myVertexShader(
                                }
 
 fragment float4 myFragmentShader(MyVertex vertexIn[[stage_in]]){
-    return vertexIn.color;
+    float2 pos = vertexIn.position.xy;
+    float4 col = float4(pos,0.0,1.0);
+    return col;
 }
 
